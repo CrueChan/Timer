@@ -15,9 +15,23 @@
 
 <body>
 	<div class="wrapper">
-		<!-- Language toggle button -->
-		<div class="lang-toggle-container">
-			<button id="langToggleBtn" class="lang-toggle-btn" type="button" title="English">EN</button>
+		<!-- Control Bar: Language, Theme, Color Scheme -->
+		<div class="control-bar">
+			<!-- Language toggle -->
+			<button id="langToggleBtn" class="control-button" type="button" title="English">EN</button>
+
+			<!-- Theme toggle (light/dark) -->
+			<button id="themeToggleBtn" class="control-button" type="button" title="Toggle dark mode">☀️</button>
+
+			<!-- Color scheme selector -->
+			<div class="color-scheme-selector">
+				<button class="color-button" id="colorBlue" data-scheme="blue" style="background-color: #14306B;" title="Blue" aria-label="Blue color scheme"></button>
+				<button class="color-button" id="colorPurple" data-scheme="purple" style="background-color: #7B3FF2;" title="Purple" aria-label="Purple color scheme"></button>
+				<button class="color-button" id="colorGreen" data-scheme="green" style="background-color: #27AE60;" title="Green" aria-label="Green color scheme"></button>
+				<button class="color-button" id="colorOrange" data-scheme="orange" style="background-color: #E67E22;" title="Orange" aria-label="Orange color scheme"></button>
+				<button class="color-button" id="colorRed" data-scheme="red" style="background-color: #E74C3C;" title="Red" aria-label="Red color scheme"></button>
+				<button class="color-button" id="colorCyan" data-scheme="cyan" style="background-color: #1ABC9C;" title="Cyan" aria-label="Cyan color scheme"></button>
+			</div>
 		</div>
 
 		<noscript>
@@ -77,7 +91,8 @@
 		<audio id="id_alarm"></audio>
 	</div>
 
-	<!-- Load i18n first, then app.js -->
+	<!-- Load theme first, then i18n, then app -->
+	<script src="theme.js"></script>
 	<script src="i18n.js"></script>
 	<script src="app.js"></script>
 </body>
