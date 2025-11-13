@@ -15,63 +15,70 @@
 
 <body>
 	<div class="wrapper">
+		<!-- Language toggle button -->
+		<div class="lang-toggle-container">
+			<button id="langToggleBtn" class="lang-toggle-btn" type="button" title="English">EN</button>
+		</div>
+
 		<noscript>
 			<div class="notice">Please enable JavaScript in your browser.</div>
 		</noscript>
 
 		<div class="content">
-			<h1>Timer</h1>
-			<p>Easy-to-use timer</p>
+			<h1 data-i18n="pageTitle">Timer</h1>
+			<p data-i18n="pageDescription">Easy-to-use timer</p>
 		</div>
 
-		<div id="id_clock_wrapper" class="container" role="region" aria-label="Timer display" aria-live="polite" aria-atomic="true">
+		<div id="id_clock_wrapper" class="container" role="region" data-i18n-aria="timerDisplayAriaLabel" aria-live="polite" aria-atomic="true">
 			<div class="clock_part">
-				<div id="id_hours" class="unit_value" aria-label="Hours">&nbsp;00&nbsp;</div>
-				<div class="unit_name">HOURS</div>
+				<div id="id_hours" class="unit_value" data-i18n-aria="hoursAriaLabel">&nbsp;00&nbsp;</div>
+				<div class="unit_name" data-i18n="hoursUnit">HOURS</div>
 			</div>
 			<div id="sep_hour" class="clock_part sep" aria-hidden="true">
 				<div class="unit_value">:</div>
 				<div class="unit_name">&nbsp;</div>
 			</div>
 			<div class="clock_part">
-				<div id="id_minutes" class="unit_value" aria-label="Minutes">&nbsp;59&nbsp;</div>
-				<div class="unit_name">MINUTES</div>
+				<div id="id_minutes" class="unit_value" data-i18n-aria="minutesAriaLabel">&nbsp;59&nbsp;</div>
+				<div class="unit_name" data-i18n="minutesUnit">MINUTES</div>
 			</div>
 			<div id="sep_minute" class="clock_part sep" aria-hidden="true">
 				<div class="unit_value">:</div>
 				<div class="unit_name">&nbsp;</div>
 			</div>
 			<div class="clock_part">
-				<div id="id_seconds" class="unit_value" aria-label="Seconds">&nbsp;33&nbsp;</div>
-				<div class="unit_name">SECONDS</div>
+				<div id="id_seconds" class="unit_value" data-i18n-aria="secondsAriaLabel">&nbsp;33&nbsp;</div>
+				<div class="unit_name" data-i18n="secondsUnit">SECONDS</div>
 			</div>
 		</div>
 
 		<div class="content">
-			<button id="startStopButton" type="button" aria-label="Start or stop the timer">START</button>
-			<button id="resetButton" disabled type="button" aria-label="Reset the timer to initial state">RESET</button>
+			<button id="startStopButton" type="button" data-i18n-aria="startStopAriaLabel" data-i18n="startButton">START</button>
+			<button id="resetButton" disabled type="button" data-i18n-aria="resetAriaLabel" data-i18n="resetButton">RESET</button>
 		</div>
 
 		<div class="content">
-			<label for="hours">Hours:</label>
-			<input id="hours" disabled maxlength="2" type="number" value="0" min="0" max="99" aria-label="Hours input field">
-			<b>H</b>&nbsp;
-			<label for="minutes">Minutes:</label>
-			<input id="minutes" disabled maxlength="2" type="number" value="5" min="0" max="59" aria-label="Minutes input field">
-			<b>M</b>&nbsp;
-			<label for="seconds">Seconds:</label>
-			<input id="seconds" disabled maxlength="2" type="number" value="0" min="0" max="59" aria-label="Seconds input field">
-			<b>S</b>&nbsp;
-			<button id="setButton" disabled type="button" aria-label="Set timer with the input values">SET</button>
+			<label for="hours" data-i18n="hoursLabel">Hours:</label>
+			<input id="hours" disabled maxlength="2" type="number" value="0" min="0" max="99" data-i18n-aria="hoursAriaLabel">
+			<b data-i18n="hoursUnit">H</b>&nbsp;
+			<label for="minutes" data-i18n="minutesLabel">Minutes:</label>
+			<input id="minutes" disabled maxlength="2" type="number" value="5" min="0" max="59" data-i18n-aria="minutesAriaLabel">
+			<b data-i18n="minutesUnit">M</b>&nbsp;
+			<label for="seconds" data-i18n="secondsLabel">Seconds:</label>
+			<input id="seconds" disabled maxlength="2" type="number" value="0" min="0" max="59" data-i18n-aria="secondsAriaLabel">
+			<b data-i18n="secondsUnit">S</b>&nbsp;
+			<button id="setButton" disabled type="button" data-i18n-aria="setAriaLabel" data-i18n="setButton">SET</button>
 		</div>
 
 		<div class="container footer">
-			&copy; Crue Chan <span class="grey">|</span> <a href="https://github.com/CrueChan/Timer/issues">Report Issues</a>
+			<span data-i18n="copyright">© Crue Chan</span> <span class="grey">|</span> <a href="https://github.com/CrueChan/Timer/issues" data-i18n="reportIssues">Report Issues</a>
 		</div>
 
 		<audio id="id_alarm"></audio>
 	</div>
 
+	<!-- Load i18n first, then app.js -->
+	<script src="i18n.js"></script>
 	<script src="app.js"></script>
 </body>
 
