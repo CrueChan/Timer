@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function() {
      * Reset the timer display
      */
     function resetTimer() {
-        startStopButton.value = 'START';
+        startStopButton.textContent = 'START';
         startStopButton.disabled = false;
         allUnitValues.forEach(el => el.style.color = 'black');
 
@@ -126,7 +126,7 @@ document.addEventListener('DOMContentLoaded', function() {
      * Start or stop the timer
      */
     function toggleTimer() {
-        if (startStopButton.value === 'START') {
+        if (startStopButton.textContent === 'START') {
             // Start the timer
             startTimestamp = Date.now();
             lastUpdateTime = performance.now();
@@ -137,7 +137,7 @@ document.addEventListener('DOMContentLoaded', function() {
             hoursInput.disabled = true;
             minutesInput.disabled = true;
             secondsInput.disabled = true;
-            startStopButton.value = 'STOP';
+            startStopButton.textContent = 'STOP';
             startStopButton.disabled = false;
 
             animationFrameId = requestAnimationFrame(timerTick);
@@ -156,7 +156,7 @@ document.addEventListener('DOMContentLoaded', function() {
             hoursInput.disabled = false;
             minutesInput.disabled = false;
             secondsInput.disabled = false;
-            startStopButton.value = 'START';
+            startStopButton.textContent = 'START';
             startStopButton.disabled = false;
         }
     }
