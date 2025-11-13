@@ -130,6 +130,7 @@ a:hover {
 #id_clock_wrapper {
 	width: 100%;
 	height: 25%;
+	margin-bottom: 30px;
 }
 
 .clock_part {
