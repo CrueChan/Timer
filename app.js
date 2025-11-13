@@ -2,6 +2,7 @@
 
 document.addEventListener('DOMContentLoaded', function() {
     // DOM Element references
+    const wrapper = document.querySelector('.wrapper');
     const secondsDisplay = document.getElementById('id_seconds');
     const minutesDisplay = document.getElementById('id_minutes');
     const hoursDisplay = document.getElementById('id_hours');
@@ -28,6 +29,59 @@ document.addEventListener('DOMContentLoaded', function() {
     let startTimestamp = null;
     let isRunning = false;
     let lastUpdateTime = 0; // For throttling updates to ~50ms
+
+    /**
+     * Play dual beep sound using Web Audio API
+     * Creates two beeps: 800Hz and 600Hz for alert notification
+     */
+    function playDualBeep() {
+        try {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+            // First beep: 800Hz
+            const osc1 = audioContext.createOscillator();
+            const gain1 = audioContext.createGain();
+            osc1.connect(gain1);
+            gain1.connect(audioContext.destination);
+            osc1.frequency.value = 800;
+            osc1.type = 'sine';
+            gain1.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gain1.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+            osc1.start(audioContext.currentTime);
+            osc1.stop(audioContext.currentTime + 0.3);
+
+            // Second beep: 600Hz (after 0.15s gap)
+            const osc2 = audioContext.createOscillator();
+            const gain2 = audioContext.createGain();
+            osc2.connect(gain2);
+            gain2.connect(audioContext.destination);
+            osc2.frequency.value = 600;
+            osc2.type = 'sine';
+            gain2.gain.setValueAtTime(0.3, audioContext.currentTime + 0.45);
+            gain2.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.75);
+            osc2.start(audioContext.currentTime + 0.45);
+            osc2.stop(audioContext.currentTime + 0.75);
+        } catch (e) {
+            console.log('Audio playback failed:', e);
+        }
+    }
+
+    /**
+     * Trigger alert animation and sound
+     * Shows red pulse + shake effect for 2.8 seconds
+     */
+    function triggerTimerAlert() {
+        // Play the beep sound
+        playDualBeep();
+
+        // Add alert class to trigger CSS animation
+        wrapper.classList.add('timer-alert');
+
+        // Remove the alert class after animation completes
+        setTimeout(function() {
+            wrapper.classList.remove('timer-alert');
+        }, 2800); // 3 iterations of 0.6s animation + 0.4s safety margin
+    }
 
     /**
      * Format a number to two-digit string
@@ -96,15 +150,10 @@ document.addEventListener('DOMContentLoaded', function() {
             pausedMs = 0;
             updateDisplay();
 
-            // Play alarm sound
-            alarmAudio.src = '/notification.wav'; // Changed to cross-platform path
-            try {
-                alarmAudio.play().catch(err => console.log('Audio play failed:', err));
-            } catch (e) {
-                console.log('Could not play alarm:', e);
-            }
+            // Trigger alert animation and sound
+            triggerTimerAlert();
 
-            // Update UI
+            // Update UI - set text color to red
             allUnitValues.forEach(el => el.style.color = 'red');
             resetButton.disabled = false;
             setButton.disabled = false;

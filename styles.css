@@ -126,6 +126,32 @@ label {
 	color: #666;
 }
 
+/* Animations for timer completion */
+@keyframes alert-pulse {
+	0%, 100% {
+		background-color: rgba(255, 0, 0, 0.1);
+	}
+	50% {
+		background-color: rgba(255, 0, 0, 0.3);
+	}
+}
+
+@keyframes shake {
+	0%, 100% {
+		transform: translateX(0);
+	}
+	10%, 30%, 50%, 70%, 90% {
+		transform: translateX(-8px);
+	}
+	20%, 40%, 60%, 80% {
+		transform: translateX(8px);
+	}
+}
+
+.timer-alert {
+	animation: alert-pulse 0.6s ease-in-out 3, shake 0.4s ease-in-out 3;
+}
+
 .grey {
 	color: #999;
 }
