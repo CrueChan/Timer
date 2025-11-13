@@ -33,13 +33,28 @@ Host the `index.html` file on any web server or use GitHub Pages for easy access
 4. **Pause Timer**: Click the **STOP** button to pause (you can resume by clicking START again)
 5. **Reset Timer**: Click the **RESET** button to clear the timer and start over
 
+## Project Structure
+
+```
+Timer/
+├── index.html       # HTML structure and entry point
+├── styles.css       # Stylesheet with responsive design
+├── app.js          # Application logic (vanilla JavaScript)
+├── README.md       # Project documentation
+├── CHANGELOG.md    # Version history and release notes
+└── LICENSE         # MIT License
+```
+
 ## Technical Details
 
 ### Dependencies
 
-- **jQuery 2.1.4** — DOM manipulation and event handling
-- **Moment.js** — Date and time calculations
-- **textFit** — Dynamic text sizing for responsive display
+**Zero external dependencies!** This project uses only vanilla JavaScript and CSS.
+
+Previously used:
+- ~~jQuery 2.1.4~~ → Replaced with vanilla JavaScript
+- ~~Moment.js~~ → Replaced with native Date API
+- ~~textFit~~ → Replaced with CSS `clamp()`
 
 ### Browser Compatibility
 
@@ -50,13 +65,34 @@ Host the `index.html` file on any web server or use GitHub Pages for easy access
 
 ### Performance
 
-The timer updates every 50 milliseconds for precise countdown accuracy using `setInterval`.
+- **File Size**: Only 10 KB total (95% smaller than original 205 KB)
+- **Zero Dependencies**: No external libraries to load
+- **Update Interval**: 50ms for smooth, accurate countdown display
+- **Responsive Fonts**: Uses CSS `clamp()` for automatic scaling without JavaScript
 
 ## Installation & Deployment
 
 ### Local Development
 
-Simply open `index.html` in your browser—no build process or dependencies to install locally.
+**Option 1: Using Python (recommended for quick testing)**
+```bash
+# Python 3
+python -m http.server 8000
+
+# Python 2
+python -m SimpleHTTPServer 8000
+```
+Then open `http://localhost:8000` in your browser.
+
+**Option 2: Using Node.js**
+```bash
+npx http-server
+```
+
+**Option 3: Using any other web server**
+Just serve the project directory over HTTP.
+
+⚠️ **Note**: Due to CORS restrictions, opening `index.html` directly via `file://` may not work properly in modern browsers.
 
 ### Deploy to GitHub Pages
 
@@ -73,22 +109,30 @@ Upload `index.html` to any web server and access via HTTP/HTTPS.
 
 ### Modify Default Duration
 
-Edit the default values in `index.html` (around line 155-157):
+Edit the default values in `index.html` (lines 56-58):
 ```html
-<input id="minutes" disabled maxlength="2" type="number" value="5">
-<input id="seconds" disabled maxlength="2" type="number" value="0">
+<input id="hours" disabled maxlength="2" type="number" value="0" min="0" max="99"> <b>H</b>&nbsp;
+<input id="minutes" disabled maxlength="2" type="number" value="5" min="0" max="59"> <b>M</b>&nbsp;
+<input id="seconds" disabled maxlength="2" type="number" value="0" min="0" max="59"> <b>S</b>&nbsp;
 ```
 
 ### Change Alarm Sound
 
-Replace the audio file path in the code (line 5572):
+Replace the audio file path in `app.js` (line ~89):
 ```javascript
-A.attr("src", "file://C:/Windows/Media/notify.wav")
+alarmAudio.src = '/notification.wav'; // Change this to your audio file path
 ```
 
 ### Customize Styling
 
-Modify the CSS in the `<style>` section to change colors, fonts, and layout.
+Modify the CSS in `styles.css` to change colors, fonts, and layout:
+```css
+input[type=submit] {
+    background-color: #14306B; /* Change button color */
+    border-radius: 10px;
+    /* ... other styles */
+}
+```
 
 ## Troubleshooting
 
