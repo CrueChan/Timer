@@ -4,6 +4,7 @@
 	--primary-color: #14306B;
 	--primary-hover: #0d1f47;
 	--primary-focus: #4a90e2;
+	--accent-color: #14306B;
 	--background-color: #ffffff;
 	--text-color: #000000;
 	--text-secondary: #666666;
@@ -81,17 +82,23 @@ h1 {
 }
 
 .control-button.color-button {
-	width: 25px;
-	height: 25px;
+	width: 35px;
+	height: 35px;
 	border-radius: 50%;
 	border: 2px solid var(--border-color);
 	font-size: 0;
 	padding: 0;
+	background-color: transparent;
+	transition: border 0.2s ease, box-shadow 0.2s ease;
+}
+
+.control-button.color-button:hover {
+	box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
 }
 
 .control-button.color-button.active {
 	border: 3px solid var(--primary-color);
-	box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+	box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
 }
 
 .color-scheme-selector {
@@ -132,10 +139,11 @@ a:hover {
 .unit_value {
 	height: 80%;
 	position: relative;
-	color: var(--text-color);
+	color: var(--accent-color);
 	/* Dynamic font sizing using CSS clamp */
 	font-size: clamp(50px, 20vw, 280px);
 	line-height: 1.15;
+	font-weight: 600;
 }
 
 .unit_name {
