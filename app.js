@@ -1,6 +1,9 @@
 // Timer Application - Optimized version without jQuery and moment.js
+// Supports multi-language via i18n.js
 
 document.addEventListener('DOMContentLoaded', function() {
+    // Initialize i18n system first
+    i18n.init();
     // DOM Element references
     const wrapper = document.querySelector('.wrapper');
     const secondsDisplay = document.getElementById('id_seconds');
@@ -29,6 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let startTimestamp = null;
     let isRunning = false;
     let lastUpdateTime = 0; // For throttling updates to ~50ms
+    let isTimerStarted = false; // Track if timer is started for button state
 
     /**
      * Play dual beep sound using Web Audio API
@@ -95,7 +99,8 @@ document.addEventListener('DOMContentLoaded', function() {
      * Reset the timer display
      */
     function resetTimer() {
-        startStopButton.textContent = 'START';
+        isTimerStarted = false;
+        startStopButton.textContent = i18n.t('startButton');
         startStopButton.disabled = false;
         allUnitValues.forEach(el => el.style.color = 'black');
 
@@ -175,8 +180,9 @@ document.addEventListener('DOMContentLoaded', function() {
      * Start or stop the timer
      */
     function toggleTimer() {
-        if (startStopButton.textContent === 'START') {
+        if (!isTimerStarted) {
             // Start the timer
+            isTimerStarted = true;
             startTimestamp = Date.now();
             lastUpdateTime = performance.now();
             isRunning = true;
@@ -186,12 +192,13 @@ document.addEventListener('DOMContentLoaded', function() {
             hoursInput.disabled = true;
             minutesInput.disabled = true;
             secondsInput.disabled = true;
-            startStopButton.textContent = 'STOP';
+            startStopButton.textContent = i18n.t('stopButton');
             startStopButton.disabled = false;
 
             animationFrameId = requestAnimationFrame(timerTick);
         } else {
             // Stop/pause the timer
+            isTimerStarted = false;
             if (animationFrameId) {
                 cancelAnimationFrame(animationFrameId);
                 animationFrameId = null;
@@ -205,7 +212,7 @@ document.addEventListener('DOMContentLoaded', function() {
             hoursInput.disabled = false;
             minutesInput.disabled = false;
             secondsInput.disabled = false;
-            startStopButton.textContent = 'START';
+            startStopButton.textContent = i18n.t('startButton');
             startStopButton.disabled = false;
         }
     }
@@ -274,6 +281,17 @@ document.addEventListener('DOMContentLoaded', function() {
     resetButton.addEventListener('click', handleReset);
     startStopButton.addEventListener('click', toggleTimer);
     document.addEventListener('keydown', handleKeyboard);
+
+    // Language toggle button
+    const langToggleBtn = document.getElementById('langToggleBtn');
+    if (langToggleBtn) {
+        langToggleBtn.addEventListener('click', function() {
+            const newLang = i18n.getOtherLanguage();
+            i18n.setLanguage(newLang);
+            // Also update button text
+            startStopButton.textContent = isTimerStarted ? i18n.t('stopButton') : i18n.t('startButton');
+        });
+    }
 
     // Handle window resize for responsive design
     window.addEventListener('resize', function() {
