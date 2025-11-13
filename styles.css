@@ -1,11 +1,28 @@
+/* CSS Variables - Theme System */
+:root {
+	/* Default light mode, blue color scheme */
+	--primary-color: #14306B;
+	--primary-hover: #0d1f47;
+	--primary-focus: #4a90e2;
+	--background-color: #ffffff;
+	--text-color: #000000;
+	--text-secondary: #666666;
+	--border-color: #e0e0e0;
+	--alert-color: #ff0000;
+}
+
 html, body {
 	margin: 0;
 	padding: 0;
 	border: 0;
 	width: 100%;
 	height: 100%;
-	font: normal 16px Helvetica,Arial,sans-serif;
+	font: normal 16px Helvetica, Arial, sans-serif;
+	background-color: var(--background-color);
+	color: var(--text-color);
+	transition: background-color 0.3s ease, color 0.3s ease;
 }
+
 div, input {
 	-webkit-box-sizing: content-box;
 	-moz-box-sizing: content-box;
@@ -13,10 +30,12 @@ div, input {
 	margin: 0;
 	padding: 0;
 }
+
 h1 {
 	margin: 0;
 	padding: 0;
 }
+
 .wrapper {
 	display: block;
 	width: 100%;
@@ -24,77 +43,113 @@ h1 {
 	position: relative;
 }
 
-/* Language toggle button */
-.lang-toggle-container {
+/* Control Bar - Language, Theme, Color Scheme */
+.control-bar {
 	position: absolute;
 	top: 10px;
 	right: 10px;
+	display: flex;
+	gap: 8px;
 	z-index: 100;
+	align-items: center;
 }
 
-.lang-toggle-btn {
-	width: 45px;
+.control-button {
+	width: 35px;
 	height: 35px;
-	font-size: 12px;
+	font-size: 16px;
 	font-weight: bold;
-	background-color: #14306B;
-	border: 1px solid #14306B;
+	background-color: var(--primary-color);
+	border: 1px solid var(--primary-color);
 	color: white;
 	border-radius: 5px;
 	cursor: pointer;
-	transition: background-color 0.2s ease;
+	transition: background-color 0.2s ease, opacity 0.2s ease;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0;
 }
 
-.lang-toggle-btn:hover {
-	background-color: #0d1f47;
+.control-button:hover {
+	background-color: var(--primary-hover);
 }
 
-.lang-toggle-btn:focus {
-	outline: 2px solid #4a90e2;
+.control-button:focus {
+	outline: 2px solid var(--primary-focus);
 	outline-offset: 1px;
+}
+
+.control-button.color-button {
+	width: 25px;
+	height: 25px;
+	border-radius: 50%;
+	border: 2px solid var(--border-color);
+	font-size: 0;
+	padding: 0;
+}
+
+.control-button.color-button.active {
+	border: 3px solid var(--primary-color);
+	box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+}
+
+.color-scheme-selector {
+	display: flex;
+	gap: 6px;
+	align-items: center;
 }
 
 .container {
 	text-align: center;
 }
+
 .content {
 	max-width: 870px;
 	min-width: 300px;
 	margin: 10px auto 0;
 	text-align: center;
 }
+
 a:hover {
 	text-decoration: none;
 }
+
 .top a:hover {
-	color: black;
+	color: var(--text-color);
 }
 
 #id_clock_wrapper {
 	width: 100%;
 	height: 25%;
 }
+
 .clock_part {
 	display: inline-block;
 	height: 100%;
 }
+
 .unit_value {
 	height: 80%;
 	position: relative;
-	color: black;
+	color: var(--text-color);
 	/* Dynamic font sizing using CSS clamp */
 	font-size: clamp(50px, 20vw, 280px);
 	line-height: 1.15;
 }
+
 .unit_name {
 	height: 20%;
 	font-size: clamp(20px, 8vw, 80px);
 	line-height: 1.15;
+	color: var(--text-color);
 }
+
 .sep {
 	display: none;
 }
-@media (min-width:1023px){
+
+@media (min-width: 1023px) {
 	#id_clock_wrapper {
 		height: 40%;
 	}
@@ -111,8 +166,8 @@ button {
 	font-size: 16px;
 	width: 150px;
 	height: 50px;
-	background-color: #14306B;
-	border: 1px solid #14306B;
+	background-color: var(--primary-color);
+	border: 1px solid var(--primary-color);
 	color: white;
 	font-weight: bold;
 	-webkit-border-radius: 10px;
@@ -124,11 +179,11 @@ button {
 }
 
 button:hover:not(:disabled) {
-	background-color: #0d1f47;
+	background-color: var(--primary-hover);
 }
 
 button:focus {
-	outline: 3px solid #4a90e2;
+	outline: 3px solid var(--primary-focus);
 	outline-offset: 2px;
 }
 
@@ -139,6 +194,11 @@ input[type=number] {
 	padding: 5px;
 	font-weight: bold;
 	text-align: center;
+	background-color: var(--background-color);
+	color: var(--text-color);
+	border: 1px solid var(--border-color);
+	border-radius: 4px;
+	transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 input[disabled],
@@ -155,7 +215,11 @@ label {
 .footer {
 	margin-top: 20px;
 	font-size: 12px;
-	color: #666;
+	color: var(--text-secondary);
+}
+
+.grey {
+	color: var(--text-secondary);
 }
 
 /* Animations for timer completion */
@@ -182,8 +246,4 @@ label {
 
 .timer-alert {
 	animation: alert-pulse 0.6s ease-in-out 3, shake 0.4s ease-in-out 3;
-}
-
-.grey {
-	color: #999;
 }

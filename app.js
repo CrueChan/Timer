@@ -1,8 +1,10 @@
 // Timer Application - Optimized version without jQuery and moment.js
-// Supports multi-language via i18n.js
+// Supports multi-language via i18n.js and theming via theme.js
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Initialize i18n system first
+    // Initialize theme system first (before i18n)
+    theme.init();
+    // Initialize i18n system
     i18n.init();
     // DOM Element references
     const wrapper = document.querySelector('.wrapper');
@@ -292,6 +294,50 @@ document.addEventListener('DOMContentLoaded', function() {
             startStopButton.textContent = isTimerStarted ? i18n.t('stopButton') : i18n.t('startButton');
         });
     }
+
+    // Theme toggle button (light/dark mode)
+    const themeToggleBtn = document.getElementById('themeToggleBtn');
+    if (themeToggleBtn) {
+        // Set initial icon based on current mode
+        updateThemeToggleIcon();
+
+        themeToggleBtn.addEventListener('click', function() {
+            theme.toggleMode();
+            updateThemeToggleIcon();
+        });
+    }
+
+    // Function to update theme toggle button icon
+    function updateThemeToggleIcon() {
+        const icon = theme.currentMode === 'dark' ? '☀️' : '🌙';
+        const title = theme.currentMode === 'dark' ? 'Switch to light mode' : 'Switch to dark mode';
+        themeToggleBtn.textContent = icon;
+        themeToggleBtn.title = title;
+    }
+
+    // Color scheme selector buttons
+    const colorButtons = document.querySelectorAll('.color-button');
+    colorButtons.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const scheme = this.getAttribute('data-scheme');
+            theme.setScheme(scheme);
+            updateActiveColorButton();
+        });
+    });
+
+    // Function to update active color button styling
+    function updateActiveColorButton() {
+        colorButtons.forEach(btn => {
+            if (btn.getAttribute('data-scheme') === theme.currentScheme) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+    }
+
+    // Initialize active color button on load
+    updateActiveColorButton();
 
     // Handle window resize for responsive design
     window.addEventListener('resize', function() {
