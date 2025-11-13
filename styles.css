@@ -82,8 +82,8 @@ h1 {
 }
 
 .control-button.color-button {
-	width: 35px;
-	height: 35px;
+	width: 25px;
+	height: 25px;
 	border-radius: 50%;
 	border: 2px solid var(--border-color);
 	font-size: 0;
