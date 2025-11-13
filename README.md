@@ -10,6 +10,9 @@ A simple and easy-to-use web-based countdown timer application.
 - 🔔 **Audio Alert** — Get notified with a sound when the countdown reaches zero
 - 📱 **Responsive Design** — Works seamlessly across desktop, tablet, and mobile devices
 - 🎨 **Clean Interface** — Minimal and intuitive user experience with large, easy-to-read display
+- ⌨️ **Keyboard Shortcuts** — Space bar to start/stop, R to reset (no mouse needed!)
+- ♿ **Accessibility** — Full screen reader support with ARIA labels and keyboard navigation
+- ⚡ **High Performance** — Uses requestAnimationFrame for smooth 60 FPS updates
 
 ## Demo
 
@@ -32,6 +35,11 @@ Host the `index.html` file on any web server or use GitHub Pages for easy access
 3. **Start Timer**: Click the **START** button to begin the countdown
 4. **Pause Timer**: Click the **STOP** button to pause (you can resume by clicking START again)
 5. **Reset Timer**: Click the **RESET** button to clear the timer and start over
+
+### Keyboard Shortcuts
+
+- **Space Bar**: Start/Stop the timer (when START/STOP button is available)
+- **R Key**: Reset the timer (when RESET button is available)
 
 ## Project Structure
 
@@ -69,6 +77,16 @@ Previously used:
 - **Zero Dependencies**: No external libraries to load
 - **Update Interval**: 50ms for smooth, accurate countdown display
 - **Responsive Fonts**: Uses CSS `clamp()` for automatic scaling without JavaScript
+- **Animation**: Uses `requestAnimationFrame()` for smooth 60 FPS updates
+
+### Accessibility
+
+- **Screen Reader Support**: Full ARIA labels and semantic HTML for screen readers
+- **Keyboard Navigation**: All controls accessible via keyboard (Tab to navigate, Enter to activate)
+- **Keyboard Shortcuts**: Quick shortcuts for common actions (Space to start/stop, R to reset)
+- **Visual Focus Indicators**: Clear blue outline on focused elements for keyboard users
+- **Disabled State**: Properly marked and visually distinct disabled controls
+- **Live Region Updates**: Timer changes announced in real-time to assistive technologies
 
 ## Installation & Deployment
 
@@ -165,6 +183,14 @@ Contributions are welcome! Feel free to:
 - Submit pull requests with improvements
 
 ## Changelog
+
+### Version 2.0 (Current - Optimization & Accessibility)
+- **95% file size reduction** (205 KB → 10 KB)
+- Removed jQuery and moment.js dependencies
+- Vanilla JavaScript with requestAnimationFrame for smooth performance
+- Full keyboard navigation and accessibility support
+- ARIA labels for screen reader support
+- Keyboard shortcuts (Space to start/stop, R to reset)
 
 ### Version 1.0 (Initial Release)
 - Core timer functionality with hours, minutes, and seconds

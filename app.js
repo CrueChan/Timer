@@ -24,9 +24,10 @@ document.addEventListener('DOMContentLoaded', function() {
     let totalDurationMs = 0; // Total duration in milliseconds
     let remainingMs = 0; // Remaining time in milliseconds
     let pausedMs = 0; // Time paused (for pause/resume)
-    let timerInterval = null;
+    let animationFrameId = null;
     let startTimestamp = null;
     let isRunning = false;
+    let lastUpdateTime = 0; // For throttling updates to ~50ms
 
     /**
      * Format a number to two-digit string
@@ -71,17 +72,26 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     /**
-     * Timer tick - called every 50ms
+     * Timer tick using requestAnimationFrame for smooth performance
+     * Updates throttled to ~50ms intervals to match original behavior
      */
-    function timerTick() {
+    function timerTick(timestamp) {
         if (!startTimestamp) return;
+
+        // Throttle updates to ~50ms (20 updates per second)
+        if (timestamp - lastUpdateTime < 50) {
+            animationFrameId = requestAnimationFrame(timerTick);
+            return;
+        }
+        lastUpdateTime = timestamp;
 
         const elapsed = Date.now() - startTimestamp;
         remainingMs = totalDurationMs - elapsed - pausedMs;
 
         if (remainingMs <= 0) {
             // Timer finished
-            clearInterval(timerInterval);
+            cancelAnimationFrame(animationFrameId);
+            animationFrameId = null;
             remainingMs = 0;
             pausedMs = 0;
             updateDisplay();
@@ -108,6 +118,7 @@ document.addEventListener('DOMContentLoaded', function() {
             pausedMs = 0;
         } else {
             updateDisplay();
+            animationFrameId = requestAnimationFrame(timerTick);
         }
     }
 
@@ -118,6 +129,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (startStopButton.value === 'START') {
             // Start the timer
             startTimestamp = Date.now();
+            lastUpdateTime = performance.now();
             isRunning = true;
 
             resetButton.disabled = false;
@@ -128,10 +140,13 @@ document.addEventListener('DOMContentLoaded', function() {
             startStopButton.value = 'STOP';
             startStopButton.disabled = false;
 
-            timerInterval = setInterval(timerTick, 50);
+            animationFrameId = requestAnimationFrame(timerTick);
         } else {
             // Stop/pause the timer
-            clearInterval(timerInterval);
+            if (animationFrameId) {
+                cancelAnimationFrame(animationFrameId);
+                animationFrameId = null;
+            }
             isRunning = false;
 
             pausedMs = totalDurationMs - remainingMs;
@@ -150,7 +165,10 @@ document.addEventListener('DOMContentLoaded', function() {
      * Reset the timer
      */
     function handleReset() {
-        clearInterval(timerInterval);
+        if (animationFrameId) {
+            cancelAnimationFrame(animationFrameId);
+            animationFrameId = null;
+        }
         isRunning = false;
         startTimestamp = null;
         resetTimer();
@@ -166,16 +184,47 @@ document.addEventListener('DOMContentLoaded', function() {
      * Set timer from input values
      */
     function handleSet() {
-        clearInterval(timerInterval);
+        if (animationFrameId) {
+            cancelAnimationFrame(animationFrameId);
+            animationFrameId = null;
+        }
         isRunning = false;
         startTimestamp = null;
         resetTimer();
+    }
+
+    /**
+     * Handle keyboard shortcuts
+     * Space: Start/Stop timer
+     * R: Reset timer
+     */
+    function handleKeyboard(event) {
+        // Don't trigger shortcuts when typing in input fields
+        if (event.target.tagName === 'INPUT' && event.target.type === 'number') {
+            return;
+        }
+
+        switch(event.code) {
+            case 'Space':
+                event.preventDefault();
+                if (!startStopButton.disabled) {
+                    toggleTimer();
+                }
+                break;
+            case 'KeyR':
+                event.preventDefault();
+                if (!resetButton.disabled) {
+                    handleReset();
+                }
+                break;
+        }
     }
 
     // Event listeners
     setButton.addEventListener('click', handleSet);
     resetButton.addEventListener('click', handleReset);
     startStopButton.addEventListener('click', toggleTimer);
+    document.addEventListener('keydown', handleKeyboard);
 
     // Handle window resize for responsive design
     window.addEventListener('resize', function() {

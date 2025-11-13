@@ -24,39 +24,45 @@
 			<p>Easy-to-use timer</p>
 		</div>
 
-		<div id="id_clock_wrapper" class="container">
+		<div id="id_clock_wrapper" class="container" role="region" aria-label="Timer display" aria-live="polite" aria-atomic="true">
 			<div class="clock_part">
-				<div id="id_hours" class="unit_value">&nbsp;00&nbsp;</div>
+				<div id="id_hours" class="unit_value" aria-label="Hours">&nbsp;00&nbsp;</div>
 				<div class="unit_name">HOURS</div>
 			</div>
-			<div id="sep_hour" class="clock_part sep">
+			<div id="sep_hour" class="clock_part sep" aria-hidden="true">
 				<div class="unit_value">:</div>
 				<div class="unit_name">&nbsp;</div>
 			</div>
 			<div class="clock_part">
-				<div id="id_minutes" class="unit_value">&nbsp;59&nbsp;</div>
+				<div id="id_minutes" class="unit_value" aria-label="Minutes">&nbsp;59&nbsp;</div>
 				<div class="unit_name">MINUTES</div>
 			</div>
-			<div id="sep_minute" class="clock_part sep">
+			<div id="sep_minute" class="clock_part sep" aria-hidden="true">
 				<div class="unit_value">:</div>
 				<div class="unit_name">&nbsp;</div>
 			</div>
 			<div class="clock_part">
-				<div id="id_seconds" class="unit_value">&nbsp;33&nbsp;</div>
+				<div id="id_seconds" class="unit_value" aria-label="Seconds">&nbsp;33&nbsp;</div>
 				<div class="unit_name">SECONDS</div>
 			</div>
 		</div>
 
 		<div class="content">
-			<input id="startStopButton" type="submit" value="STOP">
-			<input id="resetButton" disabled type="submit" value="RESET">
+			<button id="startStopButton" type="button" aria-label="Start or stop the timer">STOP</button>
+			<button id="resetButton" disabled type="button" aria-label="Reset the timer to initial state">RESET</button>
 		</div>
 
 		<div class="content">
-			<input id="hours" disabled maxlength="2" type="number" value="0" min="0" max="99"> <b>H</b>&nbsp;
-			<input id="minutes" disabled maxlength="2" type="number" value="5" min="0" max="59"> <b>M</b>&nbsp;
-			<input id="seconds" disabled maxlength="2" type="number" value="0" min="0" max="59"> <b>S</b>&nbsp;
-			<input id="setButton" disabled type="submit" value="SET">
+			<label for="hours">Hours:</label>
+			<input id="hours" disabled maxlength="2" type="number" value="0" min="0" max="99" aria-label="Hours input field">
+			<b>H</b>&nbsp;
+			<label for="minutes">Minutes:</label>
+			<input id="minutes" disabled maxlength="2" type="number" value="5" min="0" max="59" aria-label="Minutes input field">
+			<b>M</b>&nbsp;
+			<label for="seconds">Seconds:</label>
+			<input id="seconds" disabled maxlength="2" type="number" value="0" min="0" max="59" aria-label="Seconds input field">
+			<b>S</b>&nbsp;
+			<button id="setButton" disabled type="button" aria-label="Set timer with the input values">SET</button>
 		</div>
 
 		<div class="container footer">

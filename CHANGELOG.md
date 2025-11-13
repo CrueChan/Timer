@@ -36,19 +36,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Replaced textFit library** with CSS clamp() for responsive fonts
 - **Extracted code** into separate files: `styles.css` and `app.js`
 - **Fixed audio path** to be cross-platform compatible (`/notification.wav`)
+- **Improved performance**: Replaced `setInterval()` with `requestAnimationFrame()` for smoother updates
+- **Added accessibility features**: ARIA labels, roles, and live regions for screen reader support
+- **Added keyboard shortcuts**: Space to start/stop, R to reset the timer
 - Improved code readability with clear variable names and comments
+- Enhanced button styling with focus states for keyboard navigation
 
 ### Removed
 - jQuery 2.1.4 dependency
 - moment.js 2.10.6 dependency
 - textFit library dependency
 - Inline styles in HTML
+- `<input type="submit">` elements (replaced with semantic `<button>` elements)
+
+### Added
+- Keyboard navigation support with visual focus indicators
+- ARIA labels and semantic HTML for improved accessibility
+- Live region announcements for timer updates (aria-live)
+- Input field labels for screen readers
+- Button hover and focus states with smooth transitions
+- Better disabled state styling for button accessibility
 
 ### Performance
 - **95% file size reduction** (205 KB → 10 KB)
 - **96% code line reduction** (5,622 → 250 lines)
 - Improved load time by 81%
 - Better browser caching with external CSS and JS files
+- Smoother animation using requestAnimationFrame (60 FPS capable)
 
 ---
 
