@@ -104,7 +104,11 @@ document.addEventListener('DOMContentLoaded', function() {
         isTimerStarted = false;
         startStopButton.textContent = i18n.t('startButton');
         startStopButton.disabled = false;
-        allUnitValues.forEach(el => el.style.color = 'black');
+        // Remove inline color style to let CSS variable control color
+        allUnitValues.forEach(el => {
+            el.style.color = '';  // Clear inline style, let CSS take over
+            el.classList.remove('timer-finished');
+        });
 
         hours = parseInt(hoursInput.value) || 0;
         minutes = parseInt(minutesInput.value) || 0;
@@ -160,8 +164,8 @@ document.addEventListener('DOMContentLoaded', function() {
             // Trigger alert animation and sound
             triggerTimerAlert();
 
-            // Update UI - set text color to red
-            allUnitValues.forEach(el => el.style.color = 'red');
+            // Update UI - add class to show timer finished state (red color)
+            allUnitValues.forEach(el => el.classList.add('timer-finished'));
             resetButton.disabled = false;
             setButton.disabled = false;
             startStopButton.disabled = true;
