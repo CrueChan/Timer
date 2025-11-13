@@ -255,3 +255,8 @@ label {
 .timer-alert {
 	animation: alert-pulse 0.6s ease-in-out 3, shake 0.4s ease-in-out 3;
 }
+
+/* Timer finished state - show red color */
+.timer-finished {
+	color: #ff0000 !important;
+}
