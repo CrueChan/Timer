@@ -81,22 +81,23 @@ h1 {
 	outline-offset: 1px;
 }
 
-.control-button.color-button {
-	width: 25px;
-	height: 25px;
+.color-button {
+	width: 20px;
+	height: 20px;
 	border-radius: 50%;
 	border: 2px solid var(--border-color);
 	font-size: 0;
 	padding: 0;
 	background-color: transparent;
+	cursor: pointer;
 	transition: border 0.2s ease, box-shadow 0.2s ease;
 }
 
-.control-button.color-button:hover {
+.color-button:hover {
 	box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
 }
 
-.control-button.color-button.active {
+.color-button.active {
 	border: 3px solid var(--primary-color);
 	box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
 }
