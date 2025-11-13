@@ -227,6 +227,7 @@ const theme = {
         root.style.setProperty('--primary-color', colorSet.primary);
         root.style.setProperty('--primary-hover', colorSet.primaryHover);
         root.style.setProperty('--primary-focus', colorSet.primaryFocus);
+        root.style.setProperty('--accent-color', this.currentMode === 'dark' ? colorSet.primaryFocus : colorSet.primary);
         root.style.setProperty('--background-color', colorSet.background);
         root.style.setProperty('--text-color', colorSet.text);
         root.style.setProperty('--text-secondary', colorSet.textSecondary);
