@@ -24,12 +24,21 @@ Open `index.html` directly in your web browser to use the timer immediately—no
 
 ## Quick Start
 
-### Option 1: Direct Usage
+### Option 1: Standard Version (Multiple Files)
 1. Clone this repository: `git clone https://github.com/CrueChan/Timer.git`
 2. Open `index.html` in your web browser
 3. Start using the timer right away
 
-### Option 2: Online Usage
+### Option 2: Offline Version (Single File - Recommended for Isolated Environments)
+Perfect for isolated exam, interview, or competition environments with no internet access:
+1. Download `Timer-offline.html` from the repository
+2. Open it in any web browser - **no internet or file hosting needed**
+3. All features work offline: language switching, dark mode, color themes, audio alerts
+4. User preferences are saved locally (survives browser refresh)
+
+**Use Case**: Exam proctors, interview platforms, and competition platforms can distribute this single file to isolated machines.
+
+### Option 3: Online Usage
 Host the `index.html` file on any web server or use GitHub Pages for easy access.
 
 ## How to Use
@@ -49,15 +58,18 @@ Host the `index.html` file on any web server or use GitHub Pages for easy access
 
 ```
 Timer/
-├── index.html       # HTML structure and entry point
-├── styles.css       # Stylesheet with responsive design and CSS variables
-├── app.js           # Application logic (vanilla JavaScript)
-├── theme.js         # Theme management (dark mode + 6 color schemes)
-├── i18n.js          # Internationalization (English + Simplified Chinese)
-├── README.md        # Project documentation
-├── CHANGELOG.md     # Version history and release notes
-└── LICENSE          # MIT License
+├── index.html               # Main HTML entry point (uses separate CSS and JS files)
+├── Timer-offline.html       # Single-file offline version (all CSS/JS inlined)
+├── styles.css               # Stylesheet with responsive design and CSS variables
+├── app.js                   # Application logic (vanilla JavaScript)
+├── theme.js                 # Theme management (dark mode + 6 color schemes)
+├── i18n.js                  # Internationalization (English + Simplified Chinese)
+├── README.md                # Project documentation
+├── CHANGELOG.md             # Version history and release notes
+└── LICENSE                  # MIT License
 ```
+
+**Note**: For offline/isolated environments, use `Timer-offline.html` instead. It's a self-contained single file with no dependencies.
 
 ## Technical Details
 
