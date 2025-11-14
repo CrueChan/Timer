@@ -66,16 +66,48 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [2.1.0] - 2025-11-14
+
+### Added
+- **Multi-Language Support**: English and Simplified Chinese with automatic system language detection
+- **Language Switching**: Dropdown menu to manually switch between supported languages
+- **Dark Mode Support**: Automatic system preference detection with manual toggle option
+- **6 Color Themes**: Blue, Purple, Green, Orange, Red, and Cyan color schemes
+- **Theme Selection UI**: Circular color buttons for easy color scheme switching
+- **localStorage Persistence**: Remembers user's language preference, theme mode, and color scheme
+- **Web Audio API**: Replaced audio files with synthesized beep notification (more reliable and efficient)
+- **CSS Variable System**: Dynamic theming without performance overhead using CSS custom properties
+- **theme.js**: Dedicated theme management module for dark/light modes and color schemes
+- **i18n.js**: Lightweight internationalization module for multi-language support
+
+### Changed
+- **Timer Display**: Now uses CSS variables for dynamic color changes based on theme and color scheme
+- **Color Button Size**: Optimized from default button size to 20×20px for better UI proportion
+- **Timer Spacing**: Added margin-bottom for better visual separation between timer and buttons
+- **Alert Animation**: Enhanced visual feedback with red pulse and shake animations on timer completion
+
+### Fixed
+- **CSS Specificity Issue**: Replaced inline style assignments with CSS class-based theming
+- **Dark Mode Readability**: Timer text now properly visible in dark mode with accent colors
+- **Color Theme Application**: Color schemes now affect full UI, not just individual button colors
+
+### Performance
+- **Web Audio API**: Eliminates need for external audio files (smaller bundle size)
+- **CSS Variables**: Theme switching is now instant with no JavaScript re-rendering overhead
+- **localStorage**: Efficient preference caching reduces theme initialization time on repeat visits
+
+---
+
 ## [Unreleased]
 
 ### Planned
-- Custom alarm sound selection
-- Preset timer durations (5 min, 10 min, etc.)
-- Dark mode support
-- Keyboard shortcuts (Space to start/stop, R to reset)
-- Local storage to remember last used duration
+- Custom alarm sound selection (allow user-uploaded audio)
+- Preset timer durations (5 min, 10 min, 15 min, etc.)
 - Multiple simultaneous timers
-- Visual progress indicator
+- Visual progress indicator (progress bar)
+- Timer history/statistics
+- Share timer link functionality
+- Additional language support (Spanish, French, Japanese, etc.)
 
 ---
 

@@ -7,7 +7,11 @@ A simple and easy-to-use web-based countdown timer application.
 - ⏱️ **Customizable Duration** — Set hours, minutes, and seconds independently
 - ▶️ **Start/Stop Control** — Pause and resume your timer at any time
 - ↻ **Reset Function** — Quickly reset the timer to start over
-- 🔔 **Audio Alert** — Get notified with a sound when the countdown reaches zero
+- 🔔 **Smart Audio Alert** — Web Audio API-powered sound notification (no external files needed)
+- 🌍 **Multi-Language Support** — English and Simplified Chinese with auto-detection and language switching
+- 🌓 **Dark Mode** — Automatic system preference detection with manual toggle option
+- 🎨 **6 Color Themes** — Blue, Purple, Green, Orange, Red, and Cyan color schemes
+- 💾 **Persistent Preferences** — Remembers your language, theme mode, and color scheme using localStorage
 - 📱 **Responsive Design** — Works seamlessly across desktop, tablet, and mobile devices
 - 🎨 **Clean Interface** — Minimal and intuitive user experience with large, easy-to-read display
 - ⌨️ **Keyboard Shortcuts** — Space bar to start/stop, R to reset (no mouse needed!)
@@ -46,11 +50,13 @@ Host the `index.html` file on any web server or use GitHub Pages for easy access
 ```
 Timer/
 ├── index.html       # HTML structure and entry point
-├── styles.css       # Stylesheet with responsive design
-├── app.js          # Application logic (vanilla JavaScript)
-├── README.md       # Project documentation
-├── CHANGELOG.md    # Version history and release notes
-└── LICENSE         # MIT License
+├── styles.css       # Stylesheet with responsive design and CSS variables
+├── app.js           # Application logic (vanilla JavaScript)
+├── theme.js         # Theme management (dark mode + 6 color schemes)
+├── i18n.js          # Internationalization (English + Simplified Chinese)
+├── README.md        # Project documentation
+├── CHANGELOG.md     # Version history and release notes
+└── LICENSE          # MIT License
 ```
 
 ## Technical Details
@@ -63,6 +69,13 @@ Previously used:
 - ~~jQuery 2.1.4~~ → Replaced with vanilla JavaScript
 - ~~Moment.js~~ → Replaced with native Date API
 - ~~textFit~~ → Replaced with CSS `clamp()`
+
+### Core Technologies
+
+- **theme.js** — CSS variable-based theming system with dark/light modes and 6 color schemes
+- **i18n.js** — Lightweight internationalization supporting English and Simplified Chinese
+- **CSS Variables** — Dynamic theming without runtime performance overhead
+- **Web Audio API** — Synthesized sound notification (no external audio files)
 
 ### Browser Compatibility
 
@@ -134,21 +147,72 @@ Edit the default values in `index.html` (lines 56-58):
 <input id="seconds" disabled maxlength="2" type="number" value="0" min="0" max="59"> <b>S</b>&nbsp;
 ```
 
-### Change Alarm Sound
+### Customize Theme and Colors
 
-Replace the audio file path in `app.js` (line ~89):
+The theme system uses CSS variables for easy customization. Edit color values in `theme.js`:
+
 ```javascript
-alarmAudio.src = '/notification.wav'; // Change this to your audio file path
+const themes = {
+    dark: {
+        blue: {
+            primary: '#1e5ba8',           // Primary color
+            primaryHover: '#2a7bc4',      // Hover state
+            primaryFocus: '#7ba3e0',      // Focus/accent color
+            backgroundColor: '#1a1a1a',
+            textColor: '#ffffff',
+            borderColor: '#444444'
+        },
+        // ... other color schemes
+    },
+    light: {
+        // ... light mode colors
+    }
+};
+```
+
+### Add New Language
+
+Add translations to `i18n.js`:
+
+```javascript
+const translations = {
+    en: {
+        startButton: 'START',
+        // ... other translations
+    },
+    'zh-CN': {
+        startButton: '开始',
+        // ... other translations
+    },
+    // Add new language here
+};
+```
+
+### Customize Audio Alert
+
+Modify the beep sound in `app.js` by adjusting the Web Audio API parameters:
+
+```javascript
+function triggerTimerAlert() {
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const oscillator = audioContext.createOscillator();
+    oscillator.frequency.value = 800;      // Change frequency (Hz)
+    oscillator.type = 'sine';              // Change wave type
+    // ... adjust duration and volume
+}
 ```
 
 ### Customize Styling
 
-Modify the CSS in `styles.css` to change colors, fonts, and layout:
+Modify the CSS variables in `styles.css` for global styling changes:
+
 ```css
-input[type=submit] {
-    background-color: #14306B; /* Change button color */
-    border-radius: 10px;
-    /* ... other styles */
+:root {
+    --primary-color: #14306B;
+    --accent-color: #14306B;
+    --background-color: #ffffff;
+    --text-color: #000000;
+    /* ... other variables */
 }
 ```
 
@@ -182,21 +246,13 @@ Contributions are welcome! Feel free to:
 - Suggest new features
 - Submit pull requests with improvements
 
-## Changelog
+## Version History
 
-### Version 2.0 (Current - Optimization & Accessibility)
-- **95% file size reduction** (205 KB → 10 KB)
-- Removed jQuery and moment.js dependencies
-- Vanilla JavaScript with requestAnimationFrame for smooth performance
-- Full keyboard navigation and accessibility support
-- ARIA labels for screen reader support
-- Keyboard shortcuts (Space to start/stop, R to reset)
+See [CHANGELOG.md](CHANGELOG.md) for detailed version history, including:
 
-### Version 1.0 (Initial Release)
-- Core timer functionality with hours, minutes, and seconds
-- Start/stop and reset controls
-- Responsive design for all devices
-- Audio alert on completion
+- **Version 2.1.0** (Latest) — Multi-language support, dark mode, 6 color themes
+- **Version 2.0.0** — Major optimization: 95% file size reduction, accessibility improvements
+- **Version 1.0.0** — Initial release with core timer functionality
 
 ---
 
