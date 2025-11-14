@@ -1,0 +1,1167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Timer. Simple and easy to use.">
+	<meta name="keywords" content="timer, set timer">
+	<meta property="og:title" content="Timer">
+	<meta property="og:type" content="website">
+	<meta property="og:description" content="Timer. Simple and easy to use.">
+	<title>Timer</title>
+	<style>
+/* CSS Variables - Theme System */
+:root {
+	/* Default light mode, blue color scheme */
+	--primary-color: #14306B;
+	--primary-hover: #0d1f47;
+	--primary-focus: #4a90e2;
+	--accent-color: #14306B;
+	--background-color: #ffffff;
+	--text-color: #000000;
+	--text-secondary: #666666;
+	--border-color: #e0e0e0;
+	--alert-color: #ff0000;
+}
+
+html, body {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	width: 100%;
+	height: 100%;
+	font: normal 16px Helvetica, Arial, sans-serif;
+	background-color: var(--background-color);
+	color: var(--text-color);
+	transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+div, input {
+	-webkit-box-sizing: content-box;
+	-moz-box-sizing: content-box;
+	box-sizing: content-box;
+	margin: 0;
+	padding: 0;
+}
+
+h1 {
+	margin: 0;
+	padding: 0;
+}
+
+.wrapper {
+	display: block;
+	width: 100%;
+	height: 100%;
+	position: relative;
+}
+
+/* Control Bar - Language, Theme, Color Scheme */
+.control-bar {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	display: flex;
+	gap: 8px;
+	z-index: 100;
+	align-items: center;
+}
+
+.control-button {
+	width: 35px;
+	height: 35px;
+	font-size: 16px;
+	font-weight: bold;
+	background-color: var(--primary-color);
+	border: 1px solid var(--primary-color);
+	color: white;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: background-color 0.2s ease, opacity 0.2s ease;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0;
+}
+
+.control-button:hover {
+	background-color: var(--primary-hover);
+}
+
+.control-button:focus {
+	outline: 2px solid var(--primary-focus);
+	outline-offset: 1px;
+}
+
+.color-button {
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	border: 2px solid var(--border-color);
+	font-size: 0;
+	padding: 0;
+	background-color: transparent;
+	cursor: pointer;
+	transition: border 0.2s ease, box-shadow 0.2s ease;
+}
+
+.color-button:hover {
+	box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+.color-button.active {
+	border: 3px solid var(--primary-color);
+	box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
+}
+
+.color-scheme-selector {
+	display: flex;
+	gap: 6px;
+	align-items: center;
+}
+
+.container {
+	text-align: center;
+}
+
+.content {
+	max-width: 870px;
+	min-width: 300px;
+	margin: 10px auto 0;
+	text-align: center;
+}
+
+a:hover {
+	text-decoration: none;
+}
+
+.top a:hover {
+	color: var(--text-color);
+}
+
+#id_clock_wrapper {
+	width: 100%;
+	height: 25%;
+	margin-bottom: 30px;
+}
+
+.clock_part {
+	display: inline-block;
+	height: 100%;
+}
+
+.unit_value {
+	height: 80%;
+	position: relative;
+	color: var(--accent-color);
+	/* Dynamic font sizing using CSS clamp */
+	font-size: clamp(50px, 20vw, 280px);
+	line-height: 1.15;
+	font-weight: 600;
+}
+
+.unit_name {
+	height: 20%;
+	font-size: clamp(20px, 8vw, 80px);
+	line-height: 1.15;
+	color: var(--text-color);
+}
+
+.sep {
+	display: none;
+}
+
+@media (min-width: 1023px) {
+	#id_clock_wrapper {
+		height: 40%;
+	}
+	.sep {
+		display: inline-block;
+	}
+}
+
+#id_alarm {
+	display: none;
+}
+
+button {
+	font-size: 16px;
+	width: 150px;
+	height: 50px;
+	background-color: var(--primary-color);
+	border: 1px solid var(--primary-color);
+	color: white;
+	font-weight: bold;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	margin: 10px 5px 0;
+	cursor: pointer;
+	transition: background-color 0.2s ease;
+}
+
+button:hover:not(:disabled) {
+	background-color: var(--primary-hover);
+}
+
+button:focus {
+	outline: 3px solid var(--primary-focus);
+	outline-offset: 2px;
+}
+
+input[type=number] {
+	width: 40px;
+	height: 30px;
+	font-size: 18px;
+	padding: 5px;
+	font-weight: bold;
+	text-align: center;
+	background-color: var(--background-color);
+	color: var(--text-color);
+	border: 1px solid var(--border-color);
+	border-radius: 4px;
+	transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+input[disabled],
+button:disabled {
+	background-color: gray;
+	cursor: not-allowed;
+	opacity: 0.6;
+}
+
+label {
+	display: none;
+}
+
+.footer {
+	margin-top: 20px;
+	font-size: 12px;
+	color: var(--text-secondary);
+}
+
+.grey {
+	color: var(--text-secondary);
+}
+
+/* Animations for timer completion */
+@keyframes alert-pulse {
+	0%, 100% {
+		background-color: rgba(255, 0, 0, 0.1);
+	}
+	50% {
+		background-color: rgba(255, 0, 0, 0.3);
+	}
+}
+
+@keyframes shake {
+	0%, 100% {
+		transform: translateX(0);
+	}
+	10%, 30%, 50%, 70%, 90% {
+		transform: translateX(-8px);
+	}
+	20%, 40%, 60%, 80% {
+		transform: translateX(8px);
+	}
+}
+
+.timer-alert {
+	animation: alert-pulse 0.6s ease-in-out 3, shake 0.4s ease-in-out 3;
+}
+
+/* Timer finished state - show red color */
+.timer-finished {
+	color: #ff0000 !important;
+}
+	</style>
+</head>
+
+<body>
+	<div class="wrapper">
+		<!-- Control Bar: Language, Theme, Color Scheme -->
+		<div class="control-bar">
+			<!-- Language toggle -->
+			<button id="langToggleBtn" class="control-button" type="button" title="English">EN</button>
+
+			<!-- Theme toggle (light/dark) -->
+			<button id="themeToggleBtn" class="control-button" type="button" title="Toggle dark mode">☀️</button>
+
+			<!-- Color scheme selector -->
+			<div class="color-scheme-selector">
+				<button class="color-button" id="colorBlue" data-scheme="blue" style="background-color: #14306B;" title="Blue" aria-label="Blue color scheme"></button>
+				<button class="color-button" id="colorPurple" data-scheme="purple" style="background-color: #7B3FF2;" title="Purple" aria-label="Purple color scheme"></button>
+				<button class="color-button" id="colorGreen" data-scheme="green" style="background-color: #27AE60;" title="Green" aria-label="Green color scheme"></button>
+				<button class="color-button" id="colorOrange" data-scheme="orange" style="background-color: #E67E22;" title="Orange" aria-label="Orange color scheme"></button>
+				<button class="color-button" id="colorRed" data-scheme="red" style="background-color: #E74C3C;" title="Red" aria-label="Red color scheme"></button>
+				<button class="color-button" id="colorCyan" data-scheme="cyan" style="background-color: #1ABC9C;" title="Cyan" aria-label="Cyan color scheme"></button>
+			</div>
+		</div>
+
+		<noscript>
+			<div class="notice">Please enable JavaScript in your browser.</div>
+		</noscript>
+
+		<div class="content">
+			<h1 data-i18n="pageTitle">Timer</h1>
+			<p data-i18n="pageDescription">Easy-to-use timer</p>
+		</div>
+
+		<div id="id_clock_wrapper" class="container" role="region" data-i18n-aria="timerDisplayAriaLabel" aria-live="polite" aria-atomic="true">
+			<div class="clock_part">
+				<div id="id_hours" class="unit_value" data-i18n-aria="hoursAriaLabel">&nbsp;00&nbsp;</div>
+				<div class="unit_name" data-i18n="hoursUnit">HOURS</div>
+			</div>
+			<div id="sep_hour" class="clock_part sep" aria-hidden="true">
+				<div class="unit_value">:</div>
+				<div class="unit_name">&nbsp;</div>
+			</div>
+			<div class="clock_part">
+				<div id="id_minutes" class="unit_value" data-i18n-aria="minutesAriaLabel">&nbsp;59&nbsp;</div>
+				<div class="unit_name" data-i18n="minutesUnit">MINUTES</div>
+			</div>
+			<div id="sep_minute" class="clock_part sep" aria-hidden="true">
+				<div class="unit_value">:</div>
+				<div class="unit_name">&nbsp;</div>
+			</div>
+			<div class="clock_part">
+				<div id="id_seconds" class="unit_value" data-i18n-aria="secondsAriaLabel">&nbsp;33&nbsp;</div>
+				<div class="unit_name" data-i18n="secondsUnit">SECONDS</div>
+			</div>
+		</div>
+
+		<div class="content">
+			<button id="startStopButton" type="button" data-i18n-aria="startStopAriaLabel" data-i18n="startButton">START</button>
+			<button id="resetButton" disabled type="button" data-i18n-aria="resetAriaLabel" data-i18n="resetButton">RESET</button>
+		</div>
+
+		<div class="content">
+			<label for="hours" data-i18n="hoursLabel">Hours:</label>
+			<input id="hours" disabled maxlength="2" type="number" value="0" min="0" max="99" data-i18n-aria="hoursAriaLabel">
+			<b data-i18n="hoursUnit">H</b>&nbsp;
+			<label for="minutes" data-i18n="minutesLabel">Minutes:</label>
+			<input id="minutes" disabled maxlength="2" type="number" value="5" min="0" max="59" data-i18n-aria="minutesAriaLabel">
+			<b data-i18n="minutesUnit">M</b>&nbsp;
+			<label for="seconds" data-i18n="secondsLabel">Seconds:</label>
+			<input id="seconds" disabled maxlength="2" type="number" value="0" min="0" max="59" data-i18n-aria="secondsAriaLabel">
+			<b data-i18n="secondsUnit">S</b>&nbsp;
+			<button id="setButton" disabled type="button" data-i18n-aria="setAriaLabel" data-i18n="setButton">SET</button>
+		</div>
+
+		<div class="container footer">
+			<span data-i18n="copyright">© Crue Chan</span> <span class="grey">|</span> <a href="https://github.com/CrueChan/Timer/issues" data-i18n="reportIssues">Report Issues</a>
+		</div>
+
+		<audio id="id_alarm"></audio>
+	</div>
+
+	<script>
+/**
+ * Theme Management System
+ * Supports dark/light mode and 6 color schemes
+ * Auto-detects system preference and allows manual switching with localStorage persistence
+ */
+
+const theme = {
+    // Theme modes
+    modes: ['light', 'dark'],
+    currentMode: 'light',
+
+    // Color schemes
+    colorSchemes: ['blue', 'purple', 'green', 'orange', 'red', 'cyan'],
+    currentScheme: 'blue',
+
+    // Color definitions for each scheme (light mode)
+    colors: {
+        blue: {
+            light: {
+                primary: '#14306B',
+                primaryHover: '#0d1f47',
+                primaryFocus: '#4a90e2',
+                background: '#ffffff',
+                text: '#000000',
+                textSecondary: '#666666',
+                border: '#e0e0e0',
+                alert: '#ff0000'
+            },
+            dark: {
+                primary: '#3d6bb8',
+                primaryHover: '#5a8fd4',
+                primaryFocus: '#7ba3e0',
+                background: '#1a1a1a',
+                text: '#ffffff',
+                textSecondary: '#999999',
+                border: '#333333',
+                alert: '#ff6b6b'
+            }
+        },
+        purple: {
+            light: {
+                primary: '#7B3FF2',
+                primaryHover: '#6a35d1',
+                primaryFocus: '#9966ff',
+                background: '#ffffff',
+                text: '#000000',
+                textSecondary: '#666666',
+                border: '#e0e0e0',
+                alert: '#ff0000'
+            },
+            dark: {
+                primary: '#9d6de0',
+                primaryHover: '#b08ce8',
+                primaryFocus: '#b08ce8',
+                background: '#1a1a1a',
+                text: '#ffffff',
+                textSecondary: '#999999',
+                border: '#333333',
+                alert: '#ff6b6b'
+            }
+        },
+        green: {
+            light: {
+                primary: '#27AE60',
+                primaryHover: '#229954',
+                primaryFocus: '#52c77a',
+                background: '#ffffff',
+                text: '#000000',
+                textSecondary: '#666666',
+                border: '#e0e0e0',
+                alert: '#ff0000'
+            },
+            dark: {
+                primary: '#52c77a',
+                primaryHover: '#6fd394',
+                primaryFocus: '#7ddda8',
+                background: '#1a1a1a',
+                text: '#ffffff',
+                textSecondary: '#999999',
+                border: '#333333',
+                alert: '#ff6b6b'
+            }
+        },
+        orange: {
+            light: {
+                primary: '#E67E22',
+                primaryHover: '#d67c1b',
+                primaryFocus: '#f39c12',
+                background: '#ffffff',
+                text: '#000000',
+                textSecondary: '#666666',
+                border: '#e0e0e0',
+                alert: '#ff0000'
+            },
+            dark: {
+                primary: '#f39c12',
+                primaryHover: '#f8b739',
+                primaryFocus: '#fdc55d',
+                background: '#1a1a1a',
+                text: '#ffffff',
+                textSecondary: '#999999',
+                border: '#333333',
+                alert: '#ff6b6b'
+            }
+        },
+        red: {
+            light: {
+                primary: '#E74C3C',
+                primaryHover: '#c0392b',
+                primaryFocus: '#e67e73',
+                background: '#ffffff',
+                text: '#000000',
+                textSecondary: '#666666',
+                border: '#e0e0e0',
+                alert: '#ff0000'
+            },
+            dark: {
+                primary: '#e67e73',
+                primaryHover: '#ec9d96',
+                primaryFocus: '#f1b5ad',
+                background: '#1a1a1a',
+                text: '#ffffff',
+                textSecondary: '#999999',
+                border: '#333333',
+                alert: '#ff6b6b'
+            }
+        },
+        cyan: {
+            light: {
+                primary: '#1ABC9C',
+                primaryHover: '#16a085',
+                primaryFocus: '#48c9b0',
+                background: '#ffffff',
+                text: '#000000',
+                textSecondary: '#666666',
+                border: '#e0e0e0',
+                alert: '#ff0000'
+            },
+            dark: {
+                primary: '#48c9b0',
+                primaryHover: '#6ad9c4',
+                primaryFocus: '#8ce5d6',
+                background: '#1a1a1a',
+                text: '#ffffff',
+                textSecondary: '#999999',
+                border: '#333333',
+                alert: '#ff6b6b'
+            }
+        }
+    },
+
+    /**
+     * Initialize theme system
+     * Load saved preferences or detect from system
+     */
+    init: function() {
+        // Load saved theme from localStorage
+        const savedMode = localStorage.getItem('timerThemeMode');
+        const savedScheme = localStorage.getItem('timerColorScheme');
+
+        if (savedMode && this.modes.includes(savedMode)) {
+            this.currentMode = savedMode;
+        } else {
+            // Auto-detect system preference
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                this.currentMode = 'dark';
+            }
+        }
+
+        if (savedScheme && this.colorSchemes.includes(savedScheme)) {
+            this.currentScheme = savedScheme;
+        }
+
+        this.applyTheme();
+
+        // Listen for system theme changes
+        if (window.matchMedia) {
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+                if (!localStorage.getItem('timerThemeMode')) {
+                    // Only auto-switch if user hasn't manually set preference
+                    this.currentMode = e.matches ? 'dark' : 'light';
+                    this.applyTheme();
+                }
+            });
+        }
+    },
+
+    /**
+     * Set theme mode (light or dark)
+     * @param {string} mode - 'light' or 'dark'
+     */
+    setMode: function(mode) {
+        if (this.modes.includes(mode)) {
+            this.currentMode = mode;
+            localStorage.setItem('timerThemeMode', mode);
+            this.applyTheme();
+        }
+    },
+
+    /**
+     * Toggle between light and dark mode
+     */
+    toggleMode: function() {
+        this.setMode(this.currentMode === 'light' ? 'dark' : 'light');
+    },
+
+    /**
+     * Set color scheme
+     * @param {string} scheme - Color scheme name
+     */
+    setScheme: function(scheme) {
+        if (this.colorSchemes.includes(scheme)) {
+            this.currentScheme = scheme;
+            localStorage.setItem('timerColorScheme', scheme);
+            this.applyTheme();
+        }
+    },
+
+    /**
+     * Apply current theme by setting CSS variables
+     */
+    applyTheme: function() {
+        const colorSet = this.colors[this.currentScheme][this.currentMode];
+        const root = document.documentElement;
+
+        // Set CSS variables
+        root.style.setProperty('--primary-color', colorSet.primary);
+        root.style.setProperty('--primary-hover', colorSet.primaryHover);
+        root.style.setProperty('--primary-focus', colorSet.primaryFocus);
+        root.style.setProperty('--accent-color', this.currentMode === 'dark' ? colorSet.primaryFocus : colorSet.primary);
+        root.style.setProperty('--background-color', colorSet.background);
+        root.style.setProperty('--text-color', colorSet.text);
+        root.style.setProperty('--text-secondary', colorSet.textSecondary);
+        root.style.setProperty('--border-color', colorSet.border);
+        root.style.setProperty('--alert-color', colorSet.alert);
+
+        // Update document attributes
+        document.documentElement.setAttribute('data-theme', this.currentMode);
+        document.documentElement.setAttribute('data-color-scheme', this.currentScheme);
+    },
+
+    /**
+     * Get color for a specific scheme
+     * Used for color scheme selector button display
+     */
+    getSchemeColor: function(scheme) {
+        return this.colors[scheme]['light'].primary;
+    }
+};
+
+// Auto-initialize on script load
+document.addEventListener('DOMContentLoaded', function() {
+    if (!theme.currentMode || theme.currentMode === 'light') {
+        theme.init();
+    }
+});
+
+/**
+ * Internationalization (i18n) Module
+ * Supports English and Simplified Chinese
+ * Auto-detects browser language and allows manual switching with localStorage persistence
+ */
+
+const i18n = {
+    // Supported languages
+    supportedLanguages: ['en', 'zh'],
+    defaultLanguage: 'en',
+    currentLanguage: 'en',
+
+    // Translation dictionary
+    translations: {
+        en: {
+            // Page title and description
+            pageTitle: 'Timer',
+            pageDescription: 'Easy-to-use timer',
+
+            // Button labels
+            startButton: 'START',
+            stopButton: 'STOP',
+            resetButton: 'RESET',
+            setButton: 'SET',
+
+            // Input labels
+            hoursLabel: 'Hours:',
+            minutesLabel: 'Minutes:',
+            secondsLabel: 'Seconds:',
+
+            // Input units
+            hoursUnit: 'H',
+            minutesUnit: 'M',
+            secondsUnit: 'S',
+
+            // ARIA labels
+            startStopAriaLabel: 'Start or stop the timer',
+            resetAriaLabel: 'Reset the timer to initial state',
+            setAriaLabel: 'Set timer with the input values',
+            hoursAriaLabel: 'Hours input field',
+            minutesAriaLabel: 'Minutes input field',
+            secondsAriaLabel: 'Seconds input field',
+            timerDisplayAriaLabel: 'Timer display',
+
+            // Footer
+            copyright: '© Crue Chan',
+            reportIssues: 'Report Issues',
+
+            // UI Controls
+            languageToggle: 'EN',
+            languageName: 'English'
+        },
+        zh: {
+            // Page title and description
+            pageTitle: '计时器',
+            pageDescription: '简单易用的计时器',
+
+            // Button labels
+            startButton: '开始',
+            stopButton: '停止',
+            resetButton: '重置',
+            setButton: '设置',
+
+            // Input labels
+            hoursLabel: '小时:',
+            minutesLabel: '分钟:',
+            secondsLabel: '秒:',
+
+            // Input units
+            hoursUnit: '时',
+            minutesUnit: '分',
+            secondsUnit: '秒',
+
+            // ARIA labels
+            startStopAriaLabel: '启动或停止计时器',
+            resetAriaLabel: '将计时器重置为初始状态',
+            setAriaLabel: '使用输入值设置计时器',
+            hoursAriaLabel: '小时输入框',
+            minutesAriaLabel: '分钟输入框',
+            secondsAriaLabel: '秒输入框',
+            timerDisplayAriaLabel: '计时器显示',
+
+            // Footer
+            copyright: '© Crue Chan',
+            reportIssues: '报告问题',
+
+            // UI Controls
+            languageToggle: '中',
+            languageName: '简体中文'
+        }
+    },
+
+    /**
+     * Initialize i18n system
+     * Load saved language from localStorage or detect from browser
+     */
+    init: function() {
+        const savedLanguage = localStorage.getItem('timerLanguage');
+
+        if (savedLanguage && this.supportedLanguages.includes(savedLanguage)) {
+            this.setLanguage(savedLanguage);
+        } else {
+            // Auto-detect browser language
+            const browserLang = navigator.language || navigator.userLanguage;
+            const detectedLang = browserLang.startsWith('zh') ? 'zh' : 'en';
+            this.setLanguage(detectedLang);
+        }
+    },
+
+    /**
+     * Set current language and save to localStorage
+     * @param {string} lang - Language code ('en' or 'zh')
+     */
+    setLanguage: function(lang) {
+        if (this.supportedLanguages.includes(lang)) {
+            this.currentLanguage = lang;
+            localStorage.setItem('timerLanguage', lang);
+            // Trigger language change event
+            this.updateUI();
+        }
+    },
+
+    /**
+     * Get translation for a key
+     * @param {string} key - Translation key
+     * @returns {string} Translated text
+     */
+    t: function(key) {
+        const lang = this.currentLanguage;
+        if (this.translations[lang] && this.translations[lang][key]) {
+            return this.translations[lang][key];
+        }
+        // Fallback to English if translation not found
+        if (this.translations['en'][key]) {
+            return this.translations['en'][key];
+        }
+        // Return key itself if no translation found
+        return key;
+    },
+
+    /**
+     * Get other language code (toggle between en and zh)
+     * @returns {string} Other language code
+     */
+    getOtherLanguage: function() {
+        return this.currentLanguage === 'en' ? 'zh' : 'en';
+    },
+
+    /**
+     * Update UI with current language translations
+     * This will be called by app.js
+     */
+    updateUI: function() {
+        // Update document language attribute
+        document.documentElement.lang = this.currentLanguage;
+
+        // Update page title
+        document.title = this.t('pageTitle');
+
+        // Update all elements with data-i18n attribute
+        document.querySelectorAll('[data-i18n]').forEach(element => {
+            const key = element.getAttribute('data-i18n');
+            const property = element.getAttribute('data-i18n-property') || 'textContent';
+            element[property] = this.t(key);
+        });
+
+        // Update all elements with data-i18n-aria attribute
+        document.querySelectorAll('[data-i18n-aria]').forEach(element => {
+            const key = element.getAttribute('data-i18n-aria');
+            element.setAttribute('aria-label', this.t(key));
+        });
+
+        // Update language toggle button text
+        const langToggleBtn = document.getElementById('langToggleBtn');
+        if (langToggleBtn) {
+            langToggleBtn.textContent = this.t('languageToggle');
+            langToggleBtn.title = this.t('languageName');
+        }
+    }
+};
+
+// Auto-initialize on script load
+document.addEventListener('DOMContentLoaded', function() {
+    if (!i18n.currentLanguage || i18n.currentLanguage === 'en') {
+        i18n.init();
+    }
+});
+
+// Timer Application - Optimized version without jQuery and moment.js
+// Supports multi-language via i18n.js and theming via theme.js
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize theme system first (before i18n)
+    theme.init();
+    // Initialize i18n system
+    i18n.init();
+    // DOM Element references
+    const wrapper = document.querySelector('.wrapper');
+    const secondsDisplay = document.getElementById('id_seconds');
+    const minutesDisplay = document.getElementById('id_minutes');
+    const hoursDisplay = document.getElementById('id_hours');
+    const alarmAudio = document.getElementById('id_alarm');
+    const allUnitValues = document.querySelectorAll('.unit_value');
+    const allUnitNames = document.querySelectorAll('.unit_name');
+    const nonSepValues = Array.from(allUnitValues).filter(el => !el.closest('.sep'));
+
+    const resetButton = document.getElementById('resetButton');
+    const setButton = document.getElementById('setButton');
+    const startStopButton = document.getElementById('startStopButton');
+    const hoursInput = document.getElementById('hours');
+    const minutesInput = document.getElementById('minutes');
+    const secondsInput = document.getElementById('seconds');
+
+    // State variables
+    let hours = 0;
+    let minutes = 0;
+    let seconds = 0;
+    let totalDurationMs = 0; // Total duration in milliseconds
+    let remainingMs = 0; // Remaining time in milliseconds
+    let pausedMs = 0; // Time paused (for pause/resume)
+    let animationFrameId = null;
+    let startTimestamp = null;
+    let isRunning = false;
+    let lastUpdateTime = 0; // For throttling updates to ~50ms
+    let isTimerStarted = false; // Track if timer is started for button state
+
+    /**
+     * Play dual beep sound using Web Audio API
+     * Creates two beeps: 800Hz and 600Hz for alert notification
+     */
+    function playDualBeep() {
+        try {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+            // First beep: 800Hz
+            const osc1 = audioContext.createOscillator();
+            const gain1 = audioContext.createGain();
+            osc1.connect(gain1);
+            gain1.connect(audioContext.destination);
+            osc1.frequency.value = 800;
+            osc1.type = 'sine';
+            gain1.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gain1.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+            osc1.start(audioContext.currentTime);
+            osc1.stop(audioContext.currentTime + 0.3);
+
+            // Second beep: 600Hz (after 0.15s gap)
+            const osc2 = audioContext.createOscillator();
+            const gain2 = audioContext.createGain();
+            osc2.connect(gain2);
+            gain2.connect(audioContext.destination);
+            osc2.frequency.value = 600;
+            osc2.type = 'sine';
+            gain2.gain.setValueAtTime(0.3, audioContext.currentTime + 0.45);
+            gain2.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.75);
+            osc2.start(audioContext.currentTime + 0.45);
+            osc2.stop(audioContext.currentTime + 0.75);
+        } catch (e) {
+            console.log('Audio playback failed:', e);
+        }
+    }
+
+    /**
+     * Trigger alert animation and sound
+     * Shows red pulse + shake effect for 2.8 seconds
+     */
+    function triggerTimerAlert() {
+        // Play the beep sound
+        playDualBeep();
+
+        // Add alert class to trigger CSS animation
+        wrapper.classList.add('timer-alert');
+
+        // Remove the alert class after animation completes
+        setTimeout(function() {
+            wrapper.classList.remove('timer-alert');
+        }, 2800); // 3 iterations of 0.6s animation + 0.4s safety margin
+    }
+
+    /**
+     * Format a number to two-digit string
+     */
+    function formatNumber(num) {
+        if (isNaN(num) || num < 0) return '00';
+        return num < 10 ? '0' + num : String(num);
+    }
+
+    /**
+     * Reset the timer display
+     */
+    function resetTimer() {
+        isTimerStarted = false;
+        startStopButton.textContent = i18n.t('startButton');
+        startStopButton.disabled = false;
+        // Remove inline color style to let CSS variable control color
+        allUnitValues.forEach(el => {
+            el.style.color = '';  // Clear inline style, let CSS take over
+            el.classList.remove('timer-finished');
+        });
+
+        hours = parseInt(hoursInput.value) || 0;
+        minutes = parseInt(minutesInput.value) || 0;
+        seconds = parseInt(secondsInput.value) || 0;
+
+        // Calculate total duration in milliseconds
+        totalDurationMs = (hours * 3600 + minutes * 60 + seconds) * 1000;
+        remainingMs = totalDurationMs;
+        pausedMs = 0;
+
+        updateDisplay();
+    }
+
+    /**
+     * Update the display with current time
+     */
+    function updateDisplay() {
+        const totalSeconds = Math.floor(remainingMs / 1000);
+        const h = Math.floor(totalSeconds / 3600) % 24;
+        const m = Math.floor((totalSeconds % 3600) / 60);
+        const s = totalSeconds % 60;
+
+        hoursDisplay.textContent = '\u00A0' + formatNumber(h) + '\u00A0';
+        minutesDisplay.textContent = '\u00A0' + formatNumber(m) + '\u00A0';
+        secondsDisplay.textContent = '\u00A0' + formatNumber(s) + '\u00A0';
+    }
+
+    /**
+     * Timer tick using requestAnimationFrame for smooth performance
+     * Updates throttled to ~50ms intervals to match original behavior
+     */
+    function timerTick(timestamp) {
+        if (!startTimestamp) return;
+
+        // Throttle updates to ~50ms (20 updates per second)
+        if (timestamp - lastUpdateTime < 50) {
+            animationFrameId = requestAnimationFrame(timerTick);
+            return;
+        }
+        lastUpdateTime = timestamp;
+
+        const elapsed = Date.now() - startTimestamp;
+        remainingMs = totalDurationMs - elapsed - pausedMs;
+
+        if (remainingMs <= 0) {
+            // Timer finished
+            cancelAnimationFrame(animationFrameId);
+            animationFrameId = null;
+            remainingMs = 0;
+            pausedMs = 0;
+            updateDisplay();
+
+            // Trigger alert animation and sound
+            triggerTimerAlert();
+
+            // Update UI - add class to show timer finished state (red color)
+            allUnitValues.forEach(el => el.classList.add('timer-finished'));
+            resetButton.disabled = false;
+            setButton.disabled = false;
+            startStopButton.disabled = true;
+            hoursInput.disabled = false;
+            minutesInput.disabled = false;
+            secondsInput.disabled = false;
+
+            // Reset for next use
+            remainingMs = totalDurationMs;
+            pausedMs = 0;
+        } else {
+            updateDisplay();
+            animationFrameId = requestAnimationFrame(timerTick);
+        }
+    }
+
+    /**
+     * Start or stop the timer
+     */
+    function toggleTimer() {
+        if (!isTimerStarted) {
+            // Start the timer
+            isTimerStarted = true;
+            startTimestamp = Date.now();
+            lastUpdateTime = performance.now();
+            isRunning = true;
+
+            resetButton.disabled = false;
+            setButton.disabled = true;
+            hoursInput.disabled = true;
+            minutesInput.disabled = true;
+            secondsInput.disabled = true;
+            startStopButton.textContent = i18n.t('stopButton');
+            startStopButton.disabled = false;
+
+            animationFrameId = requestAnimationFrame(timerTick);
+        } else {
+            // Stop/pause the timer
+            isTimerStarted = false;
+            if (animationFrameId) {
+                cancelAnimationFrame(animationFrameId);
+                animationFrameId = null;
+            }
+            isRunning = false;
+
+            pausedMs = totalDurationMs - remainingMs;
+
+            resetButton.disabled = false;
+            setButton.disabled = false;
+            hoursInput.disabled = false;
+            minutesInput.disabled = false;
+            secondsInput.disabled = false;
+            startStopButton.textContent = i18n.t('startButton');
+            startStopButton.disabled = false;
+        }
+    }
+
+    /**
+     * Reset the timer
+     */
+    function handleReset() {
+        if (animationFrameId) {
+            cancelAnimationFrame(animationFrameId);
+            animationFrameId = null;
+        }
+        isRunning = false;
+        startTimestamp = null;
+        resetTimer();
+
+        resetButton.disabled = true;
+        setButton.disabled = false;
+        hoursInput.disabled = false;
+        minutesInput.disabled = false;
+        secondsInput.disabled = false;
+    }
+
+    /**
+     * Set timer from input values
+     */
+    function handleSet() {
+        if (animationFrameId) {
+            cancelAnimationFrame(animationFrameId);
+            animationFrameId = null;
+        }
+        isRunning = false;
+        startTimestamp = null;
+        resetTimer();
+    }
+
+    /**
+     * Handle keyboard shortcuts
+     * Space: Start/Stop timer
+     * R: Reset timer
+     */
+    function handleKeyboard(event) {
+        // Don't trigger shortcuts when typing in input fields
+        if (event.target.tagName === 'INPUT' && event.target.type === 'number') {
+            return;
+        }
+
+        switch(event.code) {
+            case 'Space':
+                event.preventDefault();
+                if (!startStopButton.disabled) {
+                    toggleTimer();
+                }
+                break;
+            case 'KeyR':
+                event.preventDefault();
+                if (!resetButton.disabled) {
+                    handleReset();
+                }
+                break;
+        }
+    }
+
+    // Event listeners
+    setButton.addEventListener('click', handleSet);
+    resetButton.addEventListener('click', handleReset);
+    startStopButton.addEventListener('click', toggleTimer);
+    document.addEventListener('keydown', handleKeyboard);
+
+    // Language toggle button
+    const langToggleBtn = document.getElementById('langToggleBtn');
+    if (langToggleBtn) {
+        langToggleBtn.addEventListener('click', function() {
+            const newLang = i18n.getOtherLanguage();
+            i18n.setLanguage(newLang);
+            // Also update button text
+            startStopButton.textContent = isTimerStarted ? i18n.t('stopButton') : i18n.t('startButton');
+        });
+    }
+
+    // Theme toggle button (light/dark mode)
+    const themeToggleBtn = document.getElementById('themeToggleBtn');
+    if (themeToggleBtn) {
+        // Set initial icon based on current mode
+        updateThemeToggleIcon();
+
+        themeToggleBtn.addEventListener('click', function() {
+            theme.toggleMode();
+            updateThemeToggleIcon();
+        });
+    }
+
+    // Function to update theme toggle button icon
+    function updateThemeToggleIcon() {
+        const icon = theme.currentMode === 'dark' ? '☀️' : '🌙';
+        const title = theme.currentMode === 'dark' ? 'Switch to light mode' : 'Switch to dark mode';
+        themeToggleBtn.textContent = icon;
+        themeToggleBtn.title = title;
+    }
+
+    // Color scheme selector buttons
+    const colorButtons = document.querySelectorAll('.color-button');
+    colorButtons.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const scheme = this.getAttribute('data-scheme');
+            theme.setScheme(scheme);
+            updateActiveColorButton();
+        });
+    });
+
+    // Function to update active color button styling
+    function updateActiveColorButton() {
+        colorButtons.forEach(btn => {
+            if (btn.getAttribute('data-scheme') === theme.currentScheme) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+    }
+
+    // Initialize active color button on load
+    updateActiveColorButton();
+
+    // Handle window resize for responsive design
+    window.addEventListener('resize', function() {
+        // CSS clamp() handles responsive sizing automatically
+        // No JS needed for font size adjustment
+    });
+
+    // Initialize
+    resetTimer();
+    hoursInput.disabled = false;
+    minutesInput.disabled = false;
+    secondsInput.disabled = false;
+    resetButton.disabled = true;
+    setButton.disabled = false;
+});
+	</script>
+</body>
+
+</html>
